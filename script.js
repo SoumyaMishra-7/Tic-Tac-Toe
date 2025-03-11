@@ -1,5 +1,5 @@
 const cells = document.querySelectorAll('.cell');
-const restartButton = document.getElementById('restart');
+const restartButton = document.getElementById('playAgain'); // Ensure ID matches your HTML button
 let currentPlayer = 'X';
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
@@ -14,14 +14,20 @@ const checkWinner = () => {
     for (let pattern of winPatterns) {
         let [a, b, c] = pattern;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            alert(`${board[a]} wins!`);
+            document.getElementById("winnerMessage").textContent = `${board[a]} Wins!`;
+            document.getElementById("winnerMessage").classList.remove("hidden");
+            document.getElementById("playAgain").classList.remove("hidden");
+            document.getElementById("exit").classList.remove("hidden");
             gameActive = false;
             return;
         }
     }
 
     if (!board.includes("")) {
-        alert("It's a draw!");
+        document.getElementById("winnerMessage").textContent = "It's a Draw!";
+        document.getElementById("winnerMessage").classList.remove("hidden");
+        document.getElementById("playAgain").classList.remove("hidden");
+        document.getElementById("exit").classList.remove("hidden");
         gameActive = false;
     }
 };
@@ -37,9 +43,22 @@ cells.forEach((cell, index) => {
     });
 });
 
-restartButton.addEventListener("click", () => {
-    board.fill("");
+restartButton.addEventListener("click", restartGame);
+
+function restartGame() {
+    // Reset all variables and UI elements
+    board = ["", "", "", "", "", "", "", "", ""];
     gameActive = true;
-    cells.forEach(cell => cell.textContent = "");
     currentPlayer = 'X';
-});
+
+    // Clear board UI
+    cells.forEach(cell => cell.textContent = "");
+
+    // Hide winner message and buttons
+    document.getElementById("winnerMessage").classList.add("hidden");
+    document.getElementById("playAgain").classList.add("hidden");
+    document.getElementById("exit").classList.add("hidden");
+
+    // Restart the player name entry
+    startGame(gameMode);
+}

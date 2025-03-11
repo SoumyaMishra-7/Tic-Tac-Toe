@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    
+
 
     <title>Tic-Tac-Toe</title>
     <style>
@@ -58,12 +60,15 @@
         <img src="friends.jpg" alt="Play with Friend" width="100">
         <button onclick="startGame('friend')">Play with Friend</button>
     </div>
+    
+
 
     <div class="container hidden" id="game">
         <h2 id="turnMessage"></h2>
         <div class="grid" id="board"></div>
         <h2 class="winner hidden" id="winnerMessage"></h2>
-        <button class="hidden" id="playAgain" onclick="resetGame()">Play Again</button>
+        <button id="playAgain" class="hidden" onclick="restartGame()">Play Again</button>
+
         <button class="hidden" id="exit" onclick="location.reload()">Exit</button>
     </div>
 
@@ -156,6 +161,12 @@
             }
             return false;
         }
+        
+    function restartGame() {
+        location.reload();  
+    }
+
+
     </script>
 
 </body>
