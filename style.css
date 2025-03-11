@@ -1,0 +1,52 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: #0b0774;
+}
+
+h1 {
+    color: #f0e7e7;
+}
+
+.board-container { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    padding: 5px;
+    border: #FFD700; /* Ensures the grid has a yellow border */
+    background-color: black; /* Optional: Helps highlight the border */
+    width: fit-content; /* Ensures the border wraps around the grid */
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background: rgba(29, 195, 48, 0.586);
+    border: 2px solid yellow; /* Ensures yellow cell borders */
+    font-size: 2em;
+    font-weight: bold; /* Makes X and O bold */
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background: lightgray;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    margin-top: 20px;
+    cursor: pointer;
+}

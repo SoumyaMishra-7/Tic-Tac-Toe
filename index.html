@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Tic-Tac-Toe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #2C2C2C; 
+            color: white; 
+        }
+        button {
+            font-size: 20px; 
+            padding: 15px 30px; 
+            margin: 10px;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            justify-content: center;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+        .winner {
+            font-size: 48px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="menu">
+        <h1>Welcome to Tic-Tac-Toe!</h1>
+        <p>Choose a mode to start playing.</p>
+
+        <img src="system.jpg" alt="Play with System" width="100">
+        <button onclick="startGame('system')">Play with System</button>
+
+        <img src="Friends.jpg" alt="Play with Friend" width="100">
+        <button onclick="startGame('friend')">Play with Friend</button>
+    </div>
+
+    <div class="container hidden" id="game">
+        <h2 id="turnMessage"></h2>
+        <div class="grid" id="board"></div>
+        <h2 class="winner hidden" id="winnerMessage"></h2>
+        <button class="hidden" id="playAgain" onclick="resetGame()">Play Again</button>
+        <button class="hidden" id="exit" onclick="location.reload()">Exit</button>
+    </div>
+
+    <script>
+        let board, currentPlayer, gameMode, player1, player2, gameActive;
+
+        function startGame(mode) {
+            gameMode = mode;
+            document.getElementById("menu").classList.add("hidden");
+            document.getElementById("game").classList.remove("hidden");
+            board = Array(9).fill(null);
+            currentPlayer = 'X';
+            gameActive = true;
+            document.getElementById("board").innerHTML = '';
+
+            for (let i = 0; i < 9; i++) {
+                let cell = document.createElement("div");
+                cell.classList.add("cell");
+                cell.dataset.index = i;
+                cell.addEventListener("click", makeMove);
+                document.getElementById("board").appendChild(cell);
+            }
+
+            if (gameMode === 'friend') {
+                player1 = prompt("Enter Player 1 Name:");
+                player2 = prompt("Enter Player 2 Name:");
+                document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
+            } else {
+                player1 = prompt("Enter Your Name:");
+                player2 = "System";
+                document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
+            }
+        }
+
+        function makeMove(event) {
+            if (!gameActive) return; // Prevent moves after game is over
+            
+            let index = event.target.dataset.index;
+            if (!board[index]) {
+                board[index] = currentPlayer;
+                event.target.textContent = currentPlayer;
+                if (checkWin()) return;
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+
+                if (gameMode === 'friend') {
+                    document.getElementById("turnMessage").textContent = `${currentPlayer === 'X' ? player1 : player2}'s turn (${currentPlayer})`;
+                } else if (gameMode === 'system' && currentPlayer === 'O') {
+                    setTimeout(systemMove, 500);
+                }
+            }
+        }
+
+        function systemMove() {
+            if (!gameActive) return; // Prevent system move after game is over
+            
+            let emptyCells = board.map((v, i) => v === null ? i : null).filter(v => v !== null);
+            let randomMove = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            board[randomMove] = 'O';
+            document.querySelector(`[data-index='${randomMove}']`).textContent = 'O';
+            if (checkWin()) return;
+            currentPlayer = 'X';
+            document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
+        }
+
+        function checkWin() {
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            for (let combination of winningCombinations) {
+                let [a, b, c] = combination;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    let winnerName = currentPlayer === 'X' ? player1 : player2;
+                    document.getElementById("winnerMessage").textContent = `${winnerName} Wins!`;
+                    document.getElementById("winnerMessage").classList.remove("hidden");
+                    document.getElementById("playAgain").classList.remove("hidden");
+                    document.getElementById("exit").classList.remove("hidden");
+                    gameActive = false;
+                    return true;
+                }
+            }
+            if (!board.includes(null)) {
+                document.getElementById("winnerMessage").textContent = "It's a Draw!";
+                document.getElementById("winnerMessage").classList.remove("hidden");
+                document.getElementById("playAgain").classList.remove("hidden");
+                document.getElementById("exit").classList.remove("hidden");
+                gameActive = false;
+                return true;
+            }
+            return false;
+        }
+    </script>
+
+</body>
+</html>
