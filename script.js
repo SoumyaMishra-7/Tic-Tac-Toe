@@ -46,15 +46,14 @@ cells.forEach((cell, index) => {
 restartButton.addEventListener("click", restartGame);
 
 function restartGame() {
-    // Reset all variables and UI elements
+   
     board = ["", "", "", "", "", "", "", "", ""];
     gameActive = true;
     currentPlayer = 'X';
 
-    // Clear board UI
+    
     cells.forEach(cell => cell.textContent = "");
 
-    // Hide winner message and buttons
     document.getElementById("winnerMessage").classList.add("hidden");
     document.getElementById("playAgain").classList.add("hidden");
     document.getElementById("exit").classList.add("hidden");
