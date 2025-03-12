@@ -59,6 +59,6 @@ function restartGame() {
     document.getElementById("playAgain").classList.add("hidden");
     document.getElementById("exit").classList.add("hidden");
 
-    // Restart the player name entry
+   
     startGame(gameMode);
 }

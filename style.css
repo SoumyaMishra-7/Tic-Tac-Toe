@@ -1,52 +1,210 @@
 body {
     text-align: center;
-    font-family: Arial, sans-serif;
+    font-family: "Poppins", sans-serif;
     background-color: #0b0774;
-}
-
-h1 {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(135deg, #0b0774 0%, #1a237e 100%);
+  }
+  
+  h1 {
     color: #f0e7e7;
-}
-
-.board-container { 
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+  }
+  
+  .board-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px auto;
-    padding: 5px;
-    border: #FFD700; /* Ensures the grid has a yellow border */
-    background-color: black; /* Optional: Helps highlight the border */
-    width: fit-content; /* Ensures the border wraps around the grid */
-}
-
-.board {
+    padding: 10px;
+    border: 3px solid #ffd700;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: fit-content;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .board {
     display: grid;
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(3, 100px);
-    gap: 5px;
-}
-
-.cell {
+    gap: 8px;
+  }
+  
+  .cell {
     width: 100px;
     height: 100px;
-    background: rgba(29, 195, 48, 0.586);
-    border: 2px solid yellow; /* Ensures yellow cell borders */
-    font-size: 2em;
-    font-weight: bold; /* Makes X and O bold */
-    color: black;
+    background: rgba(29, 195, 48, 0.7);
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-}
-
-.cell:hover {
-    background: lightgray;
-}
-
-button {
-    padding: 10px 20px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  
+  .cell:hover {
+    background: rgba(29, 195, 48, 0.9);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  button {
+    padding: 12px 24px;
     font-size: 1.2em;
     margin-top: 20px;
     cursor: pointer;
-}
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  button:hover {
+    background-color: #45a049;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  button:active {
+    transform: translateY(1px);
+  }
+  
+  /* Animation for cell placement */
+  @keyframes pop {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+    70% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Animation for winner announcement */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Animation for confetti */
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+  
+  /* Animation for winning cells */
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(233, 69, 96, 0.8);
+    }
+    100% {
+      box-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+    }
+  }
+  
+  /* Thinking animation */
+  @keyframes thinking {
+    0%,
+    80%,
+    100% {
+      transform: scale(0);
+    }
+    40% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Responsive design */
+  @media (max-width: 480px) {
+    .board {
+      grid-template-columns: repeat(3, 80px);
+      grid-template-rows: repeat(3, 80px);
+    }
+  
+    .cell {
+      width: 80px;
+      height: 80px;
+      font-size: 2em;
+    }
+  }
+  
+  /* Confetti styles */
+  .confetti {
+    position: fixed;
+    z-index: 1000;
+    top: -10px;
+    animation: confetti-fall 5s ease-in-out forwards;
+  }
+  
+  /* Thinking dots */
+  .thinking-dots {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    height: 20px;
+    margin-left: 8px;
+  }
+  
+  .thinking-dots span {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #4caf50;
+    border-radius: 50%;
+    display: inline-block;
+    animation: thinking 1.4s infinite ease-in-out both;
+  }
+  
+  .x-mark {
+    color: #e94560 !important;
+    text-shadow: 0 0 10px rgba(233, 69, 96, 0.7) !important;
+  }
+  
+  .o-mark {
+    color: #4caf50 !important;
+    text-shadow: 0 0 10px rgba(76, 175, 80, 0.7) !important;
+  }
+  
+  .winning-cell {
+    animation: glow 1.5s infinite;
+  }
+  
+  

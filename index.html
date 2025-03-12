@@ -4,76 +4,377 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    
-
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <title>Tic-Tac-Toe</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             text-align: center;
-            background-color: #2C2C2C; 
-            color: white; 
+            background-color: #1a1a2e; 
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            overflow-x: hidden;
         }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            color: #e94560;
+            text-shadow: 0 2px 10px rgba(233, 69, 96, 0.3);
+            letter-spacing: 2px;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #e2e2e2;
+        }
+        
         button {
-            font-size: 20px; 
-            padding: 15px 30px; 
-            margin: 10px;
+            font-size: 1.2rem; 
+            padding: 12px 24px; 
+            margin: 15px;
+            background-color: #0f3460;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
         }
+        
+        button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover:before {
+            left: 100%;
+        }
+        
+        button:hover {
+            background-color: #e94560;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
         .container {
-            margin-top: 50px;
+            background-color: rgba(15, 52, 96, 0.2);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            width: 90%;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
         }
+        
+        .container:before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #e94560, #0f3460, #e94560);
+            z-index: -1;
+            border-radius: 18px;
+            filter: blur(10px);
+            opacity: 0.5;
+        }
+        
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 100px);
-            grid-gap: 5px;
+            grid-gap: 10px;
             justify-content: center;
+            margin: 2rem auto;
+            position: relative;
         }
+        
+        .grid:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 12px;
+            z-index: -1;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        
         .cell {
             width: 100px;
             height: 100px;
-            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid black;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
             cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            font-size: 2.5rem;
+            font-weight: bold;
         }
+        
+        .cell:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .cell:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateZ(10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cell.x-mark {
+            color: #e94560;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.7);
+        }
+        
+        .cell.o-mark {
+            color: #4CAF50;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+        }
+        
         .hidden {
             display: none;
         }
+        
         .winner {
-            font-size: 48px;
-            margin-top: 20px;
+            font-size: 2.5rem;
+            margin-top: 1.5rem;
+            color: #e94560;
+            font-weight: bold;
+            text-shadow: 0 2px 10px rgba(233, 69, 96, 0.3);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .mode-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        
+        .mode-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .mode-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .mode-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 4px solid #0f3460;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mode-option:hover .mode-img {
+            border-color: #e94560;
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(233, 69, 96, 0.3);
+        }
+        
+        #turnMessage {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #e2e2e2;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .thinking-dots {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            height: 20px;
+        }
+        
+        .thinking-dots span {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            animation: thinking 1.4s infinite ease-in-out both;
+        }
+        
+        .thinking-dots span:nth-child(1) {
+            left: 0;
+            animation-delay: -0.32s;
+        }
+        
+        .thinking-dots span:nth-child(2) {
+            left: 20px;
+            animation-delay: -0.16s;
+        }
+        
+        .thinking-dots span:nth-child(3) {
+            left: 40px;
+        }
+        
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .winning-cell {
+            animation: glow 1.5s infinite;
+        }
+        
+        @keyframes thinking {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(0.5) rotateY(90deg); opacity: 0.5; }
+            70% { transform: scale(1.1) rotateY(0deg); }
+            100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(233, 69, 96, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(233, 69, 96, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(233, 69, 96, 0.5); }
+        }
+        
+        @media (min-width: 768px) {
+            .mode-selection {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: repeat(3, 80px);
+                grid-gap: 8px;
+            }
+            
+            .cell {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="container" id="menu">
-        <h1>Welcome to Tic-Tac-Toe!</h1>
-        <p>Choose a mode to start playing.</p>
+        <h1>Tic-Tac-Toe</h1>
+        <p>Choose a mode to start playing</p>
 
-        <img src="system.jpg" alt="Play with System" width="100">
-        <button onclick="startGame('system')">Play with System</button>
+        <div class="mode-selection">
+            <div class="mode-option">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/system.jpg-gVdTiCwvk3tKeCWZdlBeHo3vVKld9U.jpeg" alt="Play with System" class="mode-img">
+                <button onclick="startGame('system')">Play with System</button>
+            </div>
 
-        <img src="friends.jpg" alt="Play with Friend" width="100">
-        <button onclick="startGame('friend')">Play with Friend</button>
+            <div class="mode-option">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/friends.jpg-iSR6kz3Y7mXeEHkzvsQvwAGX5xIhkM.jpeg" alt="Play with Friend" class="mode-img">
+                <button onclick="startGame('friend')">Play with Friend</button>
+            </div>
+        </div>
     </div>
     
-
-
     <div class="container hidden" id="game">
         <h2 id="turnMessage"></h2>
         <div class="grid" id="board"></div>
         <h2 class="winner hidden" id="winnerMessage"></h2>
-        <button id="playAgain" class="hidden" onclick="restartGame()">Play Again</button>
-
-        <button class="hidden" id="exit" onclick="location.reload()">Exit</button>
+        
+        <div class="game-controls">
+            <button id="playAgain" class="hidden" onclick="restartGame()">Play Again</button>
+            <button class="hidden" id="exit" onclick="location.reload()">Exit to Menu</button>
+        </div>
     </div>
 
     <script>
         let board, currentPlayer, gameMode, player1, player2, gameActive;
+        
+        // Sound effects (simplified)
+        const clickSound = new Audio();
+        const winSound = new Audio();
+        
+        function playClickSound() {
+            try {
+                clickSound.play().catch(e => console.log("Audio play failed:", e));
+            } catch (e) {
+                console.log("Audio error:", e);
+            }
+        }
+        
+        function playWinSound() {
+            try {
+                winSound.play().catch(e => console.log("Audio play failed:", e));
+            } catch (e) {
+                console.log("Audio error:", e);
+            }
+        }
 
         function startGame(mode) {
             gameMode = mode;
@@ -93,11 +394,11 @@
             }
 
             if (gameMode === 'friend') {
-                player1 = prompt("Enter Player 1 Name:");
-                player2 = prompt("Enter Player 2 Name:");
+                player1 = prompt("Enter Player 1 Name:") || "Player 1";
+                player2 = prompt("Enter Player 2 Name:") || "Player 2";
                 document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
             } else {
-                player1 = prompt("Enter Your Name:");
+                player1 = prompt("Enter Your Name:") || "Player";
                 player2 = "System";
                 document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
             }
@@ -109,14 +410,29 @@
             let index = event.target.dataset.index;
             if (!board[index]) {
                 board[index] = currentPlayer;
+                
+                // Update cell appearance
                 event.target.textContent = currentPlayer;
+                event.target.classList.add(currentPlayer === 'X' ? 'x-mark' : 'o-mark');
+                
+                // Add animation for placing X or O
+                event.target.style.animation = "pop 0.3s ease-out";
+                setTimeout(() => {
+                    event.target.style.animation = "";
+                }, 300);
+                
+                // Try to play sound
+                playClickSound();
+                
                 if (checkWin()) return;
                 currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
 
                 if (gameMode === 'friend') {
                     document.getElementById("turnMessage").textContent = `${currentPlayer === 'X' ? player1 : player2}'s turn (${currentPlayer})`;
                 } else if (gameMode === 'system' && currentPlayer === 'O') {
-                    setTimeout(systemMove, 500);
+                    // Show thinking animation
+                    document.getElementById("turnMessage").innerHTML = `${player2} is thinking<span class="thinking-dots"><span></span><span></span><span></span></span>`;
+                    setTimeout(systemMove, 800);
                 }
             }
         }
@@ -127,7 +443,20 @@
             let emptyCells = board.map((v, i) => v === null ? i : null).filter(v => v !== null);
             let randomMove = emptyCells[Math.floor(Math.random() * emptyCells.length)];
             board[randomMove] = 'O';
-            document.querySelector(`[data-index='${randomMove}']`).textContent = 'O';
+            
+            let cell = document.querySelector(`[data-index='${randomMove}']`);
+            cell.textContent = 'O';
+            cell.classList.add('o-mark');
+            
+            // Add animation for system move
+            cell.style.animation = "pop 0.3s ease-out";
+            setTimeout(() => {
+                cell.style.animation = "";
+            }, 300);
+            
+            // Try to play sound
+            playClickSound();
+            
             if (checkWin()) return;
             currentPlayer = 'X';
             document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
@@ -143,10 +472,21 @@
                 let [a, b, c] = combination;
                 if (board[a] && board[a] === board[b] && board[a] === board[c]) {
                     let winnerName = currentPlayer === 'X' ? player1 : player2;
+                    
+                    // Highlight winning cells
+                    highlightWinningCells(combination);
+                    
+                    // Try to play win sound
+                    playWinSound();
+                    
+                    // Create confetti effect
+                    createConfetti();
+                    
                     document.getElementById("winnerMessage").textContent = `${winnerName} Wins!`;
                     document.getElementById("winnerMessage").classList.remove("hidden");
                     document.getElementById("playAgain").classList.remove("hidden");
                     document.getElementById("exit").classList.remove("hidden");
+                    document.getElementById("turnMessage").textContent = "";
                     gameActive = false;
                     return true;
                 }
@@ -156,18 +496,54 @@
                 document.getElementById("winnerMessage").classList.remove("hidden");
                 document.getElementById("playAgain").classList.remove("hidden");
                 document.getElementById("exit").classList.remove("hidden");
+                document.getElementById("turnMessage").textContent = "";
                 gameActive = false;
                 return true;
             }
             return false;
         }
         
-    function restartGame() {
-        location.reload();  
-    }
-
-
+        function highlightWinningCells(cells) {
+            for (let index of cells) {
+                let cell = document.querySelector(`[data-index='${index}']`);
+                cell.classList.add("winning-cell");
+            }
+        }
+        
+        function createConfetti() {
+            const colors = ['#e94560', '#4CAF50', '#FFD700', '#3498db', '#9b59b6'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.opacity = Math.random();
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                // Random shapes
+                if (Math.random() > 0.6) {
+                    confetti.style.borderRadius = '50%';
+                } else if (Math.random() > 0.5) {
+                    confetti.style.borderRadius = '5px';
+                }
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation completes
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        function restartGame() {
+            location.reload();  
+        }
     </script>
 
 </body>
 </html>
+
