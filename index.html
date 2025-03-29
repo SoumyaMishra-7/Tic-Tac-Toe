@@ -274,6 +274,37 @@
         .winning-cell {
             animation: glow 1.5s infinite;
         }
+
+        /* New name entry styles that match existing design */
+        .name-entry {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .name-input {
+            width: 80%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.3);
+        }
+        
+        .player-label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: 600;
+        }
         
         @keyframes thinking {
             0%, 80%, 100% { transform: scale(0); }
@@ -332,13 +363,31 @@
         <div class="mode-selection">
             <div class="mode-option">
                 <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/system.jpg-gVdTiCwvk3tKeCWZdlBeHo3vVKld9U.jpeg" alt="Play with System" class="mode-img">
-                <button onclick="startGame('system')">Play with System</button>
+                <button onclick="selectMode('system')">Play with System</button>
             </div>
 
             <div class="mode-option">
                 <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/friends.jpg-iSR6kz3Y7mXeEHkzvsQvwAGX5xIhkM.jpeg" alt="Play with Friend" class="mode-img">
-                <button onclick="startGame('friend')">Play with Friend</button>
+                <button onclick="selectMode('friend')">Play with Friend</button>
             </div>
+        </div>
+    </div>
+    
+    <!-- New name entry container -->
+    <div class="container hidden" id="nameEntry">
+        <h1>Tic-Tac-Toe</h1>
+        <p>Enter player names</p>
+        
+        <div class="name-entry">
+            <label class="player-label" for="player1">Player 1 (X):</label>
+            <input type="text" id="player1" class="name-input" placeholder="Your name">
+            
+            <div id="player2Container">
+                <label class="player-label" for="player2">Player 2 (O):</label>
+                <input type="text" id="player2" class="name-input" placeholder="Friend's name">
+            </div>
+            
+            <button onclick="startGameWithNames()">Start Game</button>
         </div>
     </div>
     
@@ -376,10 +425,27 @@
             }
         }
 
-        function startGame(mode) {
+        function selectMode(mode) {
             gameMode = mode;
             document.getElementById("menu").classList.add("hidden");
+            document.getElementById("nameEntry").classList.remove("hidden");
+            
+            // Hide player 2 input if playing against system
+            if (gameMode === 'system') {
+                document.getElementById("player2Container").style.display = 'none';
+            } else {
+                document.getElementById("player2Container").style.display = 'block';
+            }
+        }
+
+        function startGameWithNames() {
+            player1 = document.getElementById("player1").value.trim() || "Player 1";
+            player2 = gameMode === 'system' ? "System" : document.getElementById("player2").value.trim() || "Player 2";
+            
+            document.getElementById("nameEntry").classList.add("hidden");
             document.getElementById("game").classList.remove("hidden");
+            
+            // Initialize game board
             board = Array(9).fill(null);
             currentPlayer = 'X';
             gameActive = true;
@@ -393,15 +459,7 @@
                 document.getElementById("board").appendChild(cell);
             }
 
-            if (gameMode === 'friend') {
-                player1 = prompt("Enter Player 1 Name:") || "Player 1";
-                player2 = prompt("Enter Player 2 Name:") || "Player 2";
-                document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
-            } else {
-                player1 = prompt("Enter Your Name:") || "Player";
-                player2 = "System";
-                document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
-            }
+            document.getElementById("turnMessage").textContent = `${player1}'s turn (X)`;
         }
 
         function makeMove(event) {
@@ -546,4 +604,3 @@
 
 </body>
 </html>
-
