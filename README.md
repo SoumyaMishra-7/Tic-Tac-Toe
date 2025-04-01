@@ -3,7 +3,8 @@
 A simple and interactive **Tic-Tac-Toe** game built using **HTML, CSS, and JavaScript**. The game features two playing modes:
 1. **Play with System** – Compete against an AI opponent.
 2. **Play with Friend** – Enjoy a local multiplayer mode.
- ![image](https://github.com/user-attachments/assets/a61a48bd-af5f-48c7-8d1d-454273e8b9ea)
+![image](https://github.com/user-attachments/assets/730adef7-16e5-4a9f-80a6-08373f6a9c61)
+
 
 
 ## 🚀 Features
@@ -17,7 +18,6 @@ A simple and interactive **Tic-Tac-Toe** game built using **HTML, CSS, and JavaS
 1. **Download** the source code from [this repository](https://github.com/SoumyaMishra-7/Tic-Tac-Toe).
 2. Open `index.html` in any web browser.
 
-![image](https://github.com/user-attachments/assets/173fde2d-63b9-4360-a63a-99b2671ce312)
 
 
 ### **Method 2: Clone and Run**
